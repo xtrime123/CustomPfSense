@@ -1,0 +1,31 @@
+- name: Deploy config.xml si instalare Suricata
+  hosts: pfsense
+  become: false
+  gather_facts: false
+
+  vars_files:
+    - group_vars/all.yml
+
+  tasks:
+    - name: Generez fisierul de config.xml din template
+      ansible.builtin.template:
+        src: templates/config.xml.j2
+        dest: /tmp/config.xml
+
+    - name: Copiaza fisierul de config.xml in pfSense
+      ansible.builtin.copy:
+        src: /tmp/config.xml
+        dest: /cf/conf/config.xml
+
+    - name: Instaleaza pachetul pfSense-pkg-suricata
+      ansible.builtin.shell: |
+        pkg install -y pfSense-pkg-suricata
+      args:
+        warn: false
+
+    - name: Reincarca pachetele pfSense
+      ansible.builtin.shell: |
+        php /etc/rc.packages
+      args:
+        warn: false
+
