@@ -1,10 +1,2 @@
-#[pfsense]
-#192.168.1.21 ansible_user=root ansible_password=pfsense
- 
-#Inlocuieste IP-ul de mai jos cu ip-ul tau pfSense:
 [pfsense]
-192.168.1.21 ansible_user=root ansible_password=kentBLUE90 ansible_connection=ssh ansible_port=22
-#192.168.1.21 ansible_user=root ansible_password=pfsense ansible_connection=ssh ansible_port=22
-
-#[pfsense]
-#{{ pfsense_ip_lan }} ansible_user=root ansible_password=pfsense ansible_connection=ssh ansible_port=22
+192.168.1.21 ansible_user=root ansible_password=pfsense ansible_connection=ssh ansible_port=22
