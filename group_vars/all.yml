@@ -1,4 +1,3 @@
-pfsense_ip_wan: ""
 pfsense_ip_lan: ""
 pfsense_interface_wan: ""
 pfsense_interface_lan: ""
