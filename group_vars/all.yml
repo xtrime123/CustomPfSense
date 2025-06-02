@@ -1,5 +1,3 @@
-pfsense_interface_wan
-pfsense_interface_lan
 root_password_hash
 vpn_user_password_hash
 asn_token
