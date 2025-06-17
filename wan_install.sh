@@ -70,7 +70,7 @@ EXISTENTE["pfsense_ip"]="$PFSENSE_IP"
 
 # === 5.3 Campuri ce vor fi completate de utilizator ===
 declare -A CAMPURI=(
-  ["pfsense_ip_lan"]="IP-ul LAN pfSense (OPTIONAL)"
+  ["pfsense_ip_lan"]="IP-ul LAN pfSense (Recomandare: 192.168.10.1)"
   ["pfsense_interface_wan"]="Interfata WAN (ex. em0,vtnet0)"
   ["pfsense_interface_lan"]="Interfata LAN (ex. em0,vtnet1)"
   ["ansible_vm_ip"]="IP VM local ANSIBLE"
