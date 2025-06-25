@@ -19,9 +19,13 @@ Configurare complet automatizată pentru pfSense:
 1. **Descarcă imaginea pfSense ISO:**
    [https://www.pfsense.org/download/](https://www.pfsense.org/download/)
 
-2. **Încarcă ISO-ul în Proxmox (prin SCP):** sau manual.
+2. **Încarcă ISO-ul în Proxmox (prin SCP):** 
    ```bash
    scp pfSense-CE.iso root@proxmox:/var/lib/vz/template/iso/
+
+sau manual: 
+  [https://mattglass-it.com/pfsense-firewall-proxmox/]
+   
 Creează o mașină virtuală (VM) în Proxmox:
 
 Alocare: 512 MB RAM, 1 core, 20 GB HDD
