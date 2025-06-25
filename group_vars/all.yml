@@ -1,13 +1,14 @@
-pfsense_ip_wan: ""
+# Configurare pfSense Ansible
 pfsense_ip_lan: ""
 pfsense_interface_wan: ""
 pfsense_interface_lan: ""
-root_password_hash: ""
-vpn_user_password_hash: ""
+ansible_vm_ip: ""
 asn_token: ""
 maxmind_account: ""
 maxmind_key: ""
 oinkcode: ""
 maxmind_geoipdb_uid: ""
 maxmind_geoipdb_key: ""
-
+pfsense_ip: ""
+root_password_hash: ""
+vpn_user_password_hash: ""

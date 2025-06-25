@@ -27,25 +27,14 @@ is_valid_ip() {
 }
 
 # === 3. Cere IP-ul pfSense, repetă până e valid ===
-#while true; do
-#  read -rp "Introdu IP-ul WAN pfSense dupa instalare (ex: 192.168.1.1): " PFSENSE_IP
-#  if is_valid_ip "$PFSENSE_IP"; then
-#    break
-#  else
-#    echo "[EROARE] IP-ul WAN introdus nu este valid. Incearca din nou."
-#  fi
-#done
-
-# === 3. Cere IP-ul LAN pfSense, repet ^c p  n ^c e valid ===
 while true; do
-  read -rp "Introdu IP-ul LAN pfSense dupa instalare (ex: 192.168.1.1): " PFSENSE_IP_LAN
-  if is_valid_ip "$PFSENSE_IP_LAN"; then
+  read -rp "Introdu IP-ul WAN pfSense dupa instalare (ex: 192.168.1.1): " PFSENSE_IP
+  if is_valid_ip "$PFSENSE_IP"; then
     break
   else
-    echo "[EROARE] IP-ul LAN introdus nu este valid. Incearca din nou."
+    echo "[EROARE] IP-ul WAN introdus nu este valid. Incearca din nou."
   fi
 done
-
 
 # === 4. Scrie fisierul hosts de la zero ===
 HOSTS_FILE="./hosts"
@@ -54,10 +43,10 @@ mkdir -p "$(dirname "$HOSTS_FILE")"
 cat > "$HOSTS_FILE" <<EOF
 [pfsense]
 #$PFSENSE_IP ansible_user=root ansible_password=pfsense ansible_connection=ssh ansible_port=22 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-$PFSENSE_IP_LAN ansible_user=root ansible_password=pfsense ansible_connection=ssh ansible_port=22 ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_shell_type=sh ansible_python_interpreter=/bin/sh
+$PFSENSE_IP ansible_user=root ansible_password=pfsense ansible_connection=ssh ansible_port=22 ansible_ssh_common_args='-o StrictHostKeyChecking=no' 
 EOF
 
-echo "[INFO] Fisierul hosts a fost rescris cu IP-ul $PFSENSE_IP_LAN."
+echo "[INFO] Fisierul hosts a fost rescris cu IP-ul $PFSENSE_IP."
 
 # === 5. Pregatesc si fisierul all.yml ===
 FISIER_YAML="./group_vars/all.yml"
@@ -77,13 +66,14 @@ if [[ -f "$FISIER_YAML" ]]; then
 fi
 
 # === 5.2 Adaug IP-ul pfSense ===
-EXISTENTE["pfsense_ip_lan"]="$PFSENSE_IP_LAN"
+EXISTENTE["pfsense_ip"]="$PFSENSE_IP"
 
 # === 5.3 Campuri ce vor fi completate de utilizator ===
 declare -A CAMPURI=(
-  ["pfsense_ip_wan"]="IP-ul WAN pfSense (OPTIONAL)"
+  ["pfsense_ip_lan"]="IP-ul LAN pfSense (Recomandare: 192.168.10.1)"
   ["pfsense_interface_wan"]="Interfata WAN (ex. em0,vtnet0)"
   ["pfsense_interface_lan"]="Interfata LAN (ex. em0,vtnet1)"
+  ["ansible_vm_ip"]="IP VM local ANSIBLE"
   ["maxmind_account"]="Cont MaxMind"
   ["asn_token"]="ASN Token"
   ["maxmind_key"]="Cheie MaxMind"
@@ -93,9 +83,10 @@ declare -A CAMPURI=(
 )
 
 ORDINE=(
-  "pfsense_ip_wan"
+  "pfsense_ip_lan"
   "pfsense_interface_wan"
   "pfsense_interface_lan"
+  "ansible_vm_ip"
   "asn_token"
   "maxmind_account"
   "maxmind_key"
@@ -160,15 +151,39 @@ get_python3() {
 PYTHON_CMD=$(get_python3)
 "$PYTHON_CMD" /ansible-pfsense-setup/passcrypt.py
 
+# === 6.9 Elimin cheile vechi pentru IP-ul respectiv din known_hosts ===
+echo "[INFO] Verific dacă există o cheie veche pentru $PFSENSE_IP în known_hosts..."
+ssh-keygen -R "$PFSENSE_IP" >/dev/null 2>&1
+
 # === 7. Adaug fingerprint-ul in known_hosts daca lipseste ===
-if ! ssh-keygen -F "$PFSENSE_IP_LAN" >/dev/null; then
+if ! ssh-keygen -F "$PFSENSE_IP" >/dev/null; then
   echo "[INFO] Adaug fingerprint-ul pfSense în known_hosts..."
-  ssh-keyscan -H "$PFSENSE_IP_LAN" >> ~/.ssh/known_hosts 2>/dev/null
+  ssh-keyscan -H "$PFSENSE_IP" >> ~/.ssh/known_hosts 2>/dev/null
 else
-  echo "[INFO] Cheia SSH pentru $PFSENSE_IP_LAN exista deja in known_hosts."
+  echo "[INFO] Cheia SSH pentru $PFSENSE_IP exista deja in known_hosts."
 fi
 
-# === 8. Testeaza conexiunea SSH si ruleaza playbook ===
+# === 8. Aspetam ca pfSense sa porneasca serviciul SSH ===
+echo "[INFO] Astept ca  pfSense porneasca serviciul SSH pe $PFSENSE_IP..."
+
+SSH_OK=false
+for i in {1..30}; do
+  if nc -z -w 2 "$PFSENSE_IP" 22; then
+    echo "[OK] Portul 22 este deschis pe $PFSENSE_IP."
+    SSH_OK=true
+    break
+  else
+    echo "[INFO] In asteptare ... îIncercarea $i/30 (5s intre incercari)"
+    sleep 5
+  fi
+done
+
+if [ "$SSH_OK" != true ]; then
+  echo "[EROARE] pfSense nu raspunde pe portul 22 dupa 150 secunde. Verific daca serviciul SSH e activat."
+  exit 1
+fi
+
+# === 9. Testeaza conexiunea SSH si ruleaza playbook ===
 echo "[INFO] Verific conexiunea SSH catre pfSense..."
 if ansible -i "$HOSTS_FILE" all -m ping; then
   echo "[OK] Conexiune reusita. Rulez playbook-ul..."
@@ -177,3 +192,4 @@ else
   echo "[EROARE] Conexiunea SSH a esuat. Verific daca pfSense este online si are IP-ul corect."
   exit 1
 fi
+
