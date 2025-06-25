@@ -30,9 +30,9 @@ Alocare: 512 MB RAM, 1 core, 20 GB HDD
 
 Boot de pe ISO și urmează pașii de instalare pfSense
 
-După instalare, accesează interfața web pfSense:
+După instalare, accesează interfața web pfSense (vezi in Proxmox ip-ul alocat) :
 
-URL: https://192.168.1.1
+ex. URL:  https://192.168.1.1
 
 Username: admin, Parolă implicită: pfsense
 
