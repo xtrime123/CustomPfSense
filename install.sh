@@ -3,7 +3,7 @@
 # === 1. Verific daca Ansible este instalat ===
 if ! command -v ansible >/dev/null 2>&1; then
   echo "Ansible nu este instalat. Il voi instala acum..."
-  sudo apt update && sudo apt install -y ansible
+  apt update && apt install -y ansible
   if [ $? -ne 0 ]; then
     echo "Eroare la instalarea Ansible. Iesim."
     exit 1
