@@ -1,129 +1,89 @@
-pfSense Custom Firewall Project
+# 🔐 Automatizare pfSense pe sistem low-spec (NUC + Proxmox)
 
-Un proiect de securitate cibernetică care transformă un mini-PC (NUC) cu resurse limitate într-un firewall avansat, capabil să ofere mai multă protecție încât un router obișnuit de la ISP.
+Acest proiect automatizează configurarea și securizarea unui firewall pfSense, rulând într-un mediu virtualizat Proxmox, cu resurse hardware limitate. Soluția folosește Ansible pentru a aplica o configurație completă, personalizată.
 
-:dart: Obiectiv
+---
 
-Configurarea unui firewall personalizat cu pfSense, care include:
+## 🚀 Obiectivul proiectului
 
-Detectarea amenințărilor prin Suricata (IDS/IPS)
+Configurare complet automatizată pentru pfSense:
+- Fără configurare manuală post-instalare
+- Setări de firewall, VPN, DNSBL, blocare GeoIP
+- Instalare extensii de securitate (Suricata, pfBlockerNG, OpenVPN)
+- Resetare parole, interfețe și reguli
 
-Blocare trafic nedorit prin pfBlockerNG (inclusiv GeoIP)
+---
 
-Serviciu VPN pentru acces remote securizat (OpenVPN)
+## ⚙️ Instalare pfSense de la zero în Proxmox
 
-Integrare opțională cu Telegram pentru comenzi la distanță
+1. **Descarcă imaginea pfSense ISO:**
+   [https://www.pfsense.org/download/](https://www.pfsense.org/download/)
 
-:hammer_and_wrench: Cerințe hardware
+2. **Încarcă ISO-ul în Proxmox (prin SCP):** sau manual.
+   ```bash
+   scp pfSense-CE.iso root@proxmox:/var/lib/vz/template/iso/
+Creează o mașină virtuală (VM) în Proxmox:
 
-Intel NUC cu 4 core CPU @ 1.5GHz
+Alocare: 512 MB RAM, 1 core, 20 GB HDD
 
-4GB RAM
+2 interfețe rețea (WAN – vtnet0, LAN – vtnet1)
 
-64GB SSD
+Boot de pe ISO și urmează pașii de instalare pfSense
 
-2 interfețe de rețea (WAN/LAN sau WAN/WiFi)
+După instalare, accesează interfața web pfSense:
 
-:floppy_disk: Structura repository-ului
+URL: https://192.168.1.1
 
-pfsense-custom-firewall/
-|
-├── config/
-│   └── exported_config.xml         # Configurația pfSense exportată (curățată de date sensibile)
-|
-├── scripts/
-│   ├── postinstall.sh              # Script CLI pentru automatizare după instalare pfSense
-│   ├── telegram_integration.sh     # Script de integrare Telegram
-│   └── ddns_setup.md               # Ghid configurare Dynamic DNS
-|
-├── docs/
-│   ├── vpn_setup.md                # Pași configurare OpenVPN
-│   ├── geoip_blocking.md           # Setări pfBlockerNG + blocare țări
-│   └── suricata_config.md          # Ghid Suricata
-|
-├── assets/
-│   ├── diagram-topology.png        # Diagrama rețelelor (WAN/LAN/WiFi)
-│   └── screenshots/                # Capturi de ecran din interfața pfSense
-|
-├── .gitignore
-├── LICENSE
-└── README.md                       # Acest fișier
+Username: admin, Parolă implicită: pfsense
 
-:rocket: Instalare rapidă
+🤖 Automatizare cu Ansible
+Rulată dintr-un container Debian pe Proxmox
 
-1. Instalează pfSense pe un VM sau bare-metal
+Comanda de pornire:
 
-Link: https://www.pfsense.org/download/
+bash
+Copy
+Edit
+./install.sh
+Scriptul:
 
-2. Aplică configurația exportată
+Verifică dacă Ansible este instalat
 
-Diagnostics > Backup & Restore > Restore
+Solicită informații esențiale (IP pfSense, chei API, parole)
 
-Selectează fișierul config/exported_config.xml
+Generează automat configurația (all.yml)
 
-3. Configurează Dynamic DNS (opțional)
+Aplică configurația doar când conexiunea SSH este activă
 
-Vezi scripts/ddns_setup.md
+🔒 Funcționalități implementate
+✅ Resetare parole administrator și VPN
 
-4. Adaugă integrarea Telegram (opțional)
+✅ Configurare interfețe WAN/LAN
 
-Vezi scripts/telegram_integration.sh
+✅ Activare și configurare:
 
-:closed_lock_with_key: Servicii incluse
+Suricata – detecție intruziuni
 
-Serviciu
+pfBlockerNG – filtrare DNSBL, IP și GeoIP
 
-Descriere
+OpenVPN – acces securizat
 
-Suricata
+✅ Import automat reguli de firewall
 
-Monitorizare rețea, semnături de atac (IDS/IPS)
+✅ Test de conectivitate la fiecare pas
 
-pfBlockerNG
+✅ Upload config.xml pe pfSense
 
-Blocare IP-uri, reclame, GeoIP filtering
+## 📦 Instrucțiuni rapide de utilizare
 
-OpenVPN
+1. **Asigură-te că pfSense este instalat și funcțional în Proxmox.**
+   - Trebuie să ai două interfețe de rețea (WAN și LAN)
+   - Să știi IP-ul LAN al pfSense (ex: `192.168.1.1`) - sau logeaza-te pe routerul de la ISP si afla care este IP-ul oferit pentru Proxmox/pfSense
 
-Acces securizat de la distanță
+2. **Pornește un container Debian în Proxmox (sau VM)**
+   - Conectat în aceeași rețea cu pfSense
 
-Telegram Bot
-
-Control firewall via mesaje (opțional)
-
-:bar_chart: Diagrama rețelelor
-
- [Internet] 
-     | 
-     | (ISP Router cu Port Forwarding)
- [WAN - 192.168.1.21] pfSense [LAN - 192.168.10.1] 
-                                  |
-                              [WiFi AP / Switch / PC-uri]
-
-:notebook: Exemple utile
-
-Acces interfață pfSense: https://192.168.10.1
-
-Testare GeoIP blocking: accesează site din Burundi / Rusia
-
-VPN: Conectează-te din altă rețea cu fișierul .ovpn
-
-:warning: Securitate
-
-Schimbă parolele implicite!
-
-Folosește porturi custom pentru OpenVPN
-
-Activează SSL pentru WebGUI
-
-Nu include certificatul original în acest repo!
-
-:page_facing_up: Licența
-
-MIT License
-
-Pentru contribuții sau feedback, deschide un issue sau trimite un pull request.
-
-Lucrare de disertație - Securitate Cibernetică
-Autor: [Numele tău aici]
-An: 2025
+3. **Clonează acest repository în container:**
+   ```bash
+   git clone https://github.com/xtrime123/CustomPfSense
+   cd CustomPfSense
