@@ -28,12 +28,12 @@
 			<groupname>admins</groupname>
 			<uid>0</uid>
 			<priv>user-shell-access</priv>
+			<bcrypt-hash>{{ root_password_hash }}</bcrypt-hash>
 			<expires></expires>
 			<dashboardcolumns>2</dashboardcolumns>
 			<authorizedkeys></authorizedkeys>
 			<ipsecpsk></ipsecpsk>
 			<webguicss>pfSense.css</webguicss>
-			<bcrypt-hash>{{ root_password_hash }}</bcrypt-hash>
 		</user>
 		<user>
 			<scope>user</scope>
@@ -183,6 +183,24 @@
 		<rule>
 			<ipprotocol>inet</ipprotocol>
 			<type>block</type>
+			<descr><![CDATA[pfB_PRI1_v4 auto rule]]></descr>
+			<source>
+				<address>pfB_PRI1_v4</address>
+			</source>
+			<destination>
+				<any></any>
+			</destination>
+			<log></log>
+			<created>
+				<time>1750233630</time>
+				<username><![CDATA[Auto]]></username>
+			</created>
+			<interface>wan</interface>
+			<tracker>1770009876</tracker>
+		</rule>
+		<rule>
+			<ipprotocol>inet</ipprotocol>
+			<type>block</type>
 			<descr><![CDATA[pfB_Africa_v4 auto rule]]></descr>
 			<source>
 				<any></any>
@@ -192,7 +210,7 @@
 			</destination>
 			<log></log>
 			<created>
-				<time>1748591769</time>
+				<time>1750233626</time>
 				<username><![CDATA[Auto]]></username>
 			</created>
 			<interface>lan</interface>
@@ -210,7 +228,7 @@
 			</destination>
 			<log></log>
 			<created>
-				<time>1748591769</time>
+				<time>1750233626</time>
 				<username><![CDATA[Auto]]></username>
 			</created>
 			<interface>lan</interface>
@@ -228,29 +246,11 @@
 			</destination>
 			<log></log>
 			<created>
-				<time>1748591770</time>
+				<time>1750233626</time>
 				<username><![CDATA[Auto]]></username>
 			</created>
 			<interface>lan</interface>
 			<tracker>1770009934</tracker>
-		</rule>
-		<rule>
-			<ipprotocol>inet6</ipprotocol>
-			<type>block</type>
-			<descr><![CDATA[pfB_Europe_v6 auto rule]]></descr>
-			<source>
-				<any></any>
-			</source>
-			<destination>
-				<address>pfB_Europe_v6</address>
-			</destination>
-			<log></log>
-			<created>
-				<time>1748591770</time>
-				<username><![CDATA[Auto]]></username>
-			</created>
-			<interface>lan</interface>
-			<tracker>1770009830</tracker>
 		</rule>
 		<rule>
 			<ipprotocol>inet</ipprotocol>
@@ -264,7 +264,7 @@
 			</destination>
 			<log></log>
 			<created>
-				<time>1748591770</time>
+				<time>1750233630</time>
 				<username><![CDATA[Auto]]></username>
 			</created>
 			<interface>lan</interface>
@@ -302,39 +302,6 @@
 				<time>1748335112</time>
 				<username><![CDATA[admin@192.168.10.102 (Local Database)]]></username>
 			</updated>
-		</rule>
-		<rule>
-			<id></id>
-			<tracker>1748590194</tracker>
-			<type>pass</type>
-			<interface>wan</interface>
-			<ipprotocol>inet</ipprotocol>
-			<tag></tag>
-			<tagged></tagged>
-			<max></max>
-			<max-src-nodes></max-src-nodes>
-			<max-src-conn></max-src-conn>
-			<max-src-states></max-src-states>
-			<statetimeout></statetimeout>
-			<statetype><![CDATA[keep state]]></statetype>
-			<os></os>
-			<protocol>tcp</protocol>
-			<source>
-				<address>192.168.1.0/24</address>
-			</source>
-			<destination>
-				<network>(self)</network>
-				<port>22</port>
-			</destination>
-			<descr><![CDATA[Allows SSH to WAN]]></descr>
-			<updated>
-				<time>1748590194</time>
-				<username><![CDATA[admin@{{ ansible_vm_ip }} (Local Database)]]></username>
-			</updated>
-			<created>
-				<time>1748590194</time>
-				<username><![CDATA[admin@{{ ansible_vm_ip }} (Local Database)]]></username>
-			</created>
 		</rule>
 		<rule>
 			<id></id>
@@ -507,6 +474,42 @@
 				<username><![CDATA[OpenVPN Wizard]]></username>
 			</created>
 		</rule>
+		<rule>
+			<descr><![CDATA[OpenVPN DigiVPN wizard]]></descr>
+			<source>
+				<any></any>
+			</source>
+			<destination>
+				<network>lanip</network>
+				<port>1194</port>
+			</destination>
+			<interface>lan</interface>
+			<protocol>udp</protocol>
+			<type>pass</type>
+			<enabled>on</enabled>
+			<tracker>1750250231</tracker>
+			<created>
+				<time>1750250231</time>
+				<username><![CDATA[OpenVPN Wizard]]></username>
+			</created>
+		</rule>
+		<rule>
+			<descr><![CDATA[OpenVPN DigiVPN wizard]]></descr>
+			<source>
+				<any></any>
+			</source>
+			<destination>
+				<any></any>
+			</destination>
+			<interface>openvpn</interface>
+			<type>pass</type>
+			<enabled>on</enabled>
+			<tracker>1750250232</tracker>
+			<created>
+				<time>1750250231</time>
+				<username><![CDATA[OpenVPN Wizard]]></username>
+			</created>
+		</rule>
 		<separator>
 			<lan></lan>
 			<wan></wan>
@@ -541,15 +544,6 @@
 			<updatefreq>32</updatefreq>
 			<address></address>
 			<descr><![CDATA[pfBlockerNG  Auto  GeoIP Alias [ RU,RU_rep, ]]]></descr>
-			<type>urltable</type>
-			<detail><![CDATA[DO NOT EDIT THIS ALIAS]]></detail>
-		</alias>
-		<alias>
-			<name>pfB_Europe_v6</name>
-			<url>https://127.0.0.1:443/pfblockerng/pfblockerng.php?pfb=pfB_Europe_v6</url>
-			<updatefreq>32</updatefreq>
-			<address></address>
-			<descr><![CDATA[pfBlockerNG  Auto  GeoIP Alias [ RU,RU_rep,RU, ]]]></descr>
 			<type>urltable</type>
 			<detail><![CDATA[DO NOT EDIT THIS ALIAS]]></detail>
 		</alias>
@@ -717,26 +711,123 @@
 			<protocol>UDP4</protocol>
 			<dev_mode>tun</dev_mode>
 			<interface>wan</interface>
+			<ipaddr></ipaddr>
 			<local_port>1194</local_port>
 			<description><![CDATA[OpenVPN Server]]></description>
-			<tls>IwojIDIwNDggYml0IE9wZW5WUE4gc3RhdGljIGtleQojCi0tLS0tQkVHSU4gT3BlblZQTiBTdGF0aWMga2V5IFYxLS0tLS0KOWFhYjk2NzgzNTIxNjVjMDJiZDQ2YzEyZWM0ZDM2MmMKZTgxY2RmMWY3MGIzMDQ1OTBjYmRmM2MyOGFjMTJiYWEKZjg5ZjQ4MDdlZTBkOTg3ZmFjMmM3YTI1MmQwYThkYmQKZGQ1YTdhYTA4NTM4MDkzNDRlZTFmZmI3MWViZWQ5NDUKOGIyNTQ4MDUzYzBmZjdhODAyYzJjOTJiMDQ2OTRlMTMKMGQwNGVhNTE0OTBlY2QxNzZjZWQ1YjU0OGVlZTVkZDIKOTUxMzdiMjE3NDdmNzY1NDVmZTE3M2YwMWRhMzI1ODYKMDdmZWY5YjQ0NmI4ZTNlMmFjN2JhM2Y5NDU4NzhjN2EKZTcxNDIwYTg2ZmMxMTA0YWNjMTg0MWVmNzU2MzM0MWUKNWFjNzFmNDJiMzA5NzEyNjg1MzEyMjk0ZDE0MzllYzIKZTgxMTlmYzI3MGNjYjJmNjZiOGY4MGQwZDE1ZWNhNTEKNDMxZDliY2IwZTVjZDI0Nzc3ZmFiODY5YTVjOGExZGUKNzU0ZTkzOGU3MjI5YjFhZGM5NTFiMGY0NjE3ZTU2MDEKNGUzZjIyMDA4MDY0MGUwYmRjOWZiNWZmM2U1ZmUxM2QKOTBiYjNhNjdlZWUyN2FmNWFiMDEwY2FkMTU5MmZkNTQKNGNkNmQ5YTNiN2E1ZWMwMDU5ZjM1YmMzYmU0OTJiODEKLS0tLS1FTkQgT3BlblZQTiBTdGF0aWMga2V5IFYxLS0tLS0K</tls>
+			<custom_options></custom_options>
+			<tls>Iw0KIyAyMDQ4IGJpdCBPcGVuVlBOIHN0YXRpYyBrZXkNCiMNCi0tLS0tQkVHSU4gT3BlblZQTiBTdGF0aWMga2V5IFYxLS0tLS0NCjlhYWI5Njc4MzUyMTY1YzAyYmQ0NmMxMmVjNGQzNjJjDQplODFjZGYxZjcwYjMwNDU5MGNiZGYzYzI4YWMxMmJhYQ0KZjg5ZjQ4MDdlZTBkOTg3ZmFjMmM3YTI1MmQwYThkYmQNCmRkNWE3YWEwODUzODA5MzQ0ZWUxZmZiNzFlYmVkOTQ1DQo4YjI1NDgwNTNjMGZmN2E4MDJjMmM5MmIwNDY5NGUxMw0KMGQwNGVhNTE0OTBlY2QxNzZjZWQ1YjU0OGVlZTVkZDINCjk1MTM3YjIxNzQ3Zjc2NTQ1ZmUxNzNmMDFkYTMyNTg2DQowN2ZlZjliNDQ2YjhlM2UyYWM3YmEzZjk0NTg3OGM3YQ0KZTcxNDIwYTg2ZmMxMTA0YWNjMTg0MWVmNzU2MzM0MWUNCjVhYzcxZjQyYjMwOTcxMjY4NTMxMjI5NGQxNDM5ZWMyDQplODExOWZjMjcwY2NiMmY2NmI4ZjgwZDBkMTVlY2E1MQ0KNDMxZDliY2IwZTVjZDI0Nzc3ZmFiODY5YTVjOGExZGUNCjc1NGU5MzhlNzIyOWIxYWRjOTUxYjBmNDYxN2U1NjAxDQo0ZTNmMjIwMDgwNjQwZTBiZGM5ZmI1ZmYzZTVmZTEzZA0KOTBiYjNhNjdlZWUyN2FmNWFiMDEwY2FkMTU5MmZkNTQNCjRjZDZkOWEzYjdhNWVjMDA1OWYzNWJjM2JlNDkyYjgxDQotLS0tLUVORCBPcGVuVlBOIFN0YXRpYyBrZXkgVjEtLS0tLQ0K</tls>
 			<tls_type>auth</tls_type>
+			<tlsauth_keydir>default</tlsauth_keydir>
 			<caref>682cb80164144</caref>
+			<crlref></crlref>
+			<ocspurl></ocspurl>
 			<certref>682cb838626e8</certref>
 			<dh_length>2048</dh_length>
-			<data_ciphers>AES-256-GCM,AES-128-GCM,CHACHA20-POLY1305</data_ciphers>
+			<ecdh_curve>none</ecdh_curve>
+			<cert_depth>1</cert_depth>
+			<strictusercn></strictusercn>
 			<data_ciphers_fallback>AES-256-CBC</data_ciphers_fallback>
 			<digest>SHA256</digest>
 			<engine>none</engine>
 			<tunnel_network>10.8.0.0/24</tunnel_network>
-			<gwredir>on</gwredir>
+			<tunnel_networkv6></tunnel_networkv6>
+			<remote_network></remote_network>
+			<remote_networkv6></remote_networkv6>
+			<gwredir>yes</gwredir>
+			<gwredir6></gwredir6>
 			<local_network>192.168.1.0/24</local_network>
+			<local_networkv6></local_networkv6>
+			<maxclients></maxclients>
+			<connlimit></connlimit>
 			<allow_compression>no</allow_compression>
+			<compression></compression>
+			<compression_push></compression_push>
+			<passtos></passtos>
+			<client2client></client2client>
 			<dynamic_ip>yes</dynamic_ip>
 			<topology>subnet</topology>
+			<serverbridge_dhcp></serverbridge_dhcp>
+			<serverbridge_interface>none</serverbridge_interface>
+			<serverbridge_routegateway></serverbridge_routegateway>
+			<serverbridge_dhcp_start></serverbridge_dhcp_start>
+			<serverbridge_dhcp_end></serverbridge_dhcp_end>
+			<username_as_common_name><![CDATA[enabled]]></username_as_common_name>
 			<exit_notify>1</exit_notify>
+			<sndrcvbuf></sndrcvbuf>
+			<netbios_enable></netbios_enable>
+			<netbios_ntype>0</netbios_ntype>
+			<netbios_scope></netbios_scope>
+			<create_gw>both</create_gw>
+			<verbosity_level>1</verbosity_level>
+			<data_ciphers>AES-256-GCM,AES-128-GCM,CHACHA20-POLY1305</data_ciphers>
+			<ping_method>keepalive</ping_method>
+			<keepalive_interval>10</keepalive_interval>
+			<keepalive_timeout>60</keepalive_timeout>
+			<ping_seconds>10</ping_seconds>
+			<ping_push></ping_push>
+			<ping_action>ping_restart</ping_action>
+			<ping_action_seconds>60</ping_action_seconds>
+			<ping_action_push></ping_action_push>
 			<inactive_seconds>300</inactive_seconds>
 		</openvpn-server>
+		<openvpn-client>
+			<auth_user><![CDATA[uservpn]]></auth_user>
+			<auth_pass><![CDATA[]]></auth_pass>
+			<proxy_user></proxy_user>
+			<proxy_passwd></proxy_passwd>
+			<vpnid>3</vpnid>
+			<disable></disable>
+			<protocol>UDP4</protocol>
+			<dev_mode>tun</dev_mode>
+			<interface>wan</interface>
+			<ipaddr></ipaddr>
+			<local_port></local_port>
+			<server_addr>digivpn.mywire.org</server_addr>
+			<server_port>1195</server_port>
+			<proxy_addr></proxy_addr>
+			<proxy_port></proxy_port>
+			<proxy_authtype>none</proxy_authtype>
+			<description><![CDATA[DigiClinet]]></description>
+			<mode>p2p_tls</mode>
+			<topology>subnet</topology>
+			<custom_options></custom_options>
+			<caref>6852b1139eaae</caref>
+			<certref></certref>
+			<crlref></crlref>
+			<tls>Iw0KIyAyMDQ4IGJpdCBPcGVuVlBOIHN0YXRpYyBrZXkNCiMNCi0tLS0tQkVHSU4gT3BlblZQTiBTdGF0aWMga2V5IFYxLS0tLS0NCmVkZWI3N2ExOTY3NmMwOTQyNGQzYzQxNWVkYzhkZjg4DQpjMGI0ZGViZDdlZTE4OTQ2YWI2M2RhNTY3YjM1Yjg2OA0KOTg3NjYxNDY1YjFmZGMyN2E1MmQ0NTgzNDQ0MzE5NWUNCjFjMmE0NjkzOWMxNjZjZjVmMDhmMjQyNGYyYmVkYTc2DQpmMmVmNTk1ZmJhMDg2ZGRmODI1NDQwODQzMGE0YmYxYg0KNTVmMTFjOTkzNmI1MDQ1NTMxZWU3MzQ1YjhjMTAxNjkNCjQ4NTE3MGQwMzIzZDlhMTQxMDZlNzllNmExZTljNzIwDQo2Y2ZiMzEwNmI0YWVhZGE4YWIzYWZjOGExZWZmZjA4YQ0KZjMyZjRhN2U1NDBmMTNkMWNkMzc3OTcwMjhlNDY1YzENCjFmZWIwODE4YmExNWEzMDM4OGRkMWZmMTgyODE1Y2E1DQphOWYyNGExZTgwNWE0NGZkMjdhMjFiMTNlNzJlZTA5ZQ0KNTBiYzJiMzRiNjhkZTgyMjBhYzMzY2YzNDY5YzZmY2UNCjQxY2U1ZGJiZmRjOWUxNWQxMDY5Y2EyYjdmNWU5MDVlDQo2NDkzMGRkYzg0OWNjNzk5ZDM5YzZlMGVjODQ0NGM1Zg0KN2EyNjc2NmU3ZGVkMDc4NzU0NmQ5MmE1Yzc0ODA0ZGUNCmMyMTFmODNjMTc5MjU2ZDEyNTQ2NDlhMWM3NDdlOGJlDQotLS0tLUVORCBPcGVuVlBOIFN0YXRpYyBrZXkgVjEtLS0tLQ0K</tls>
+			<tls_type>auth</tls_type>
+			<tlsauth_keydir>default</tlsauth_keydir>
+			<remote_cert_tls></remote_cert_tls>
+			<data_ciphers_fallback>AES-256-CBC</data_ciphers_fallback>
+			<digest>SHA256</digest>
+			<engine>none</engine>
+			<tunnel_network>10.0.8.0/24</tunnel_network>
+			<tunnel_networkv6></tunnel_networkv6>
+			<remote_network></remote_network>
+			<remote_networkv6></remote_networkv6>
+			<use_shaper></use_shaper>
+			<allow_compression>no</allow_compression>
+			<compression></compression>
+			<auth-retry-none></auth-retry-none>
+			<passtos></passtos>
+			<udp_fast_io></udp_fast_io>
+			<exit_notify>1</exit_notify>
+			<sndrcvbuf></sndrcvbuf>
+			<route_no_pull></route_no_pull>
+			<route_no_exec></route_no_exec>
+			<dns_add></dns_add>
+			<verbosity_level>1</verbosity_level>
+			<create_gw>both</create_gw>
+			<data_ciphers>AES-256-GCM,AES-128-GCM,CHACHA20-POLY1305</data_ciphers>
+			<ping_method>keepalive</ping_method>
+			<keepalive_interval>10</keepalive_interval>
+			<keepalive_timeout>60</keepalive_timeout>
+			<ping_seconds>10</ping_seconds>
+			<ping_action>ping_restart</ping_action>
+			<ping_action_seconds>60</ping_action_seconds>
+			<inactive_seconds>0</inactive_seconds>
+			<unbound_restart></unbound_restart>
+		</openvpn-client>
 	</openvpn>
 	<dnshaper></dnshaper>
 	<unbound>
@@ -756,9 +847,9 @@
 	<vlans></vlans>
 	<qinqs></qinqs>
 	<revision>
-		<time>1748849523</time>
-		<description><![CDATA[admin@{{ ansible_vm_ip }} (Local Database): Successfully edited user admin]]></description>
-		<username><![CDATA[admin@{{ ansible_vm_ip }} (Local Database)]]></username>
+		<time>1750251636</time>
+		<description><![CDATA[admin@192.168.1.7 (Local Database): Updated OpenVPN client to server digivpn.mywire.org:1195 DigiClinet]]></description>
+		<username><![CDATA[admin@192.168.1.7 (Local Database)]]></username>
 	</revision>
 	<gateways>
 		<gateway_item>
@@ -1126,7 +1217,7 @@
 				<snort_custom_url></snort_custom_url>
 				<gplv2_custom_url></gplv2_custom_url>
 				<maxmind_geoipdb_uid>{{ maxmind_geoipdb_uid }}</maxmind_geoipdb_uid>
-				<maxmind_geoipdb_key>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</maxmind_geoipdb_key>
+				<maxmind_geoipdb_key>{{ maxmind_geoipdb_key }}</maxmind_geoipdb_key>
 				<log_to_systemlog>off</log_to_systemlog>
 				<update_notify>on</update_notify>
 				<rule_categories_notify>off</rule_categories_notify>
@@ -1135,6 +1226,7 @@
 				<live_swap_updates>off</live_swap_updates>
 				<clearblocks>on</clearblocks>
 				<autoruleupdatetime>04:30</autoruleupdatetime>
+				<auto_manage_sids>on</auto_manage_sids>
 			</config>
 			<sid_mgmt_lists>
 				<item>
@@ -1156,6 +1248,11 @@
 					<name>modifysid-sample.conf</name>
 					<modtime>1737991522</modtime>
 					<content>IyBleGFtcGxlIG1vZGlmeXNpZC5jb25mCiMKIyBmb3JtYXR0aW5nIGlzIHNpbXBsZQojIDxzaWQsIGNhdGVnb3J5LCBsaXN0IG9mIHNpZHMmY2F0ZWdvcmllcz4gIndoYXQgSSdtIHJlcGxhY2luZyIgIndoYXQgSSdtIHJlcGxhY2luZyBpdCB3aXRoIgojCiMgTm90ZSB0aGF0IHRoaXMgd2lsbCBvbmx5IHdvcmsgd2l0aCBHSUQ6MSBydWxlcywgc2ltcGx5IGJlY2F1c2UgbW9kaWZ5aW5nCiMgR0lEOjMgU08gc3R1YiBydWxlcyB3b3VsZCBub3QgYWN0dWFsbHkgYWZmZWN0IHRoZSBydWxlLgojCiMgSWYgeW91IGFyZSBhdHRlbXB0aW5nIHRvIGNoYW5nZSBydWxlc3RhdGUgKGVuYWJsZSxkaXNhYmxlKSBmcm9tIGhlcmUKIyB0aGVuIHlvdSBhcmUgZG9pbmcgaXQgd3JvbmcuIERvIHRoaXMgZnJvbSB3aXRoaW4gdGhlIHJlc3BlY3RpdmUgCiMgcnVsZXN0YXRlIG1vZGlmaWNhdGlvbiBjb25maWd1cmF0aW9uIGZpbGVzLgoKIyB0aGUgZm9sbG93aW5nIGFwcGxpZXMgdG8gc2lkIDEwMDEwIG9ubHkgYW5kIHJlcHJlc2VudHMgd2hhdCB3b3VsZCBub3JtYWxseQojIGJlIHMvdG9fY2xpZW50L2Zyb21fc2VydmVyLwojIDEwMDEwICJ0b19jbGllbnQiICJmcm9tX3NlcnZlciIKCiMgdGhlIGZvbGxvd2luZyB3b3VsZCByZXBsYWNlIEhUVFBfUE9SVFMgd2l0aCBIVFRQU19QT1JUUyBmb3IgQUxMIEdJRDoxCiMgcnVsZXMKIyAiSFRUUF9QT1JUUyIgIkhUVFBTX1BPUlRTIgoKIyBtdWx0aXBsZSBzaWRzIGNhbiBiZSBzcGVjaWZpZWQgYXMgbm90ZWQgYmVsb3c6CiMgMzAyLDQyOSwxODIxICIkRVhURVJOQUxfTkVUIiAiJEhPTUVfTkVUIgoKIyBtb2RpZnkgYWxsIHNpZ25hdHVyZXMgaW4gYSBjYXRlZ29yeS4gRXhhbXBsZTogcmVwbGFjZSAiJEVYVEVSTkFMX05FVFMiIHdpdGggImFueSIgdG8gYmUgYWxlcnRzIG9uIGluc2lkZXIgdGhyZWF0cyBhcyB3ZWxsCiMgZW1lcmdpbmctc2NhbiAiJEVYVEVSTkFMX05FVCIgImFueSIKCiMgbW9kaWZ5IGFsbCBzaWduYXR1cmVzIGluIG11bHRpcGxlIGNhdGVnb3JpZXMKIyBlbWVyZ2luZy1zY2FuLGVtZXJnaW5nLXNxbCAiJEVYVEVSTkFMX05FVCIgImFueSIKCiMgbW9kaWZ5IGFsbCBzaWduYXR1cmVzIGZvciBhIGNhdGVnb3J5IGFuZCBzcGVjaWZpYyBTSURzIGZyb20gb3RoZXIgY2F0ZWdvcmllcwojIGVtZXJnaW5nLXNxbCwyMTAwNjkxLDIwMDk4MTcgIiRFWFRFUk5BTF9ORVQiICJhbnkiCg==</content>
+				</item>
+				<item>
+					<name>User Forced SID Actions</name>
+					<modtime>1750247156</modtime>
+					<content>ZHJvcDoKICAtIDk5OTAwMDIKICAtIDk5OTAwMDMKICAtIDk5OTAwMDQKICAtIDk5OTAwMDUKICAtIDk5OTAwMDY=</content>
 				</item>
 			</sid_mgmt_lists>
 			<rule>
@@ -1391,6 +1488,12 @@
 				<rulesets>feodotracker.rules||sslblacklist_tls_cert.rules||app-layer-events.rules||decoder-events.rules||emerging-adware_pup.rules||dhcp-events.rules||emerging-attack_response.rules||dnp3-events.rules||emerging-botcc.portgrouped.rules||dns-events.rules||emerging-botcc.rules||files.rules||emerging-chat.rules||ftp-events.rules||emerging-ciarmy.rules||http-events.rules||emerging-coinminer.rules||http2-events.rules||emerging-compromised.rules||ipsec-events.rules||kerberos-events.rules||emerging-deleted.rules||modbus-events.rules||emerging-dns.rules||mqtt-events.rules||emerging-dos.rules||nfs-events.rules||emerging-drop.rules||ntp-events.rules||emerging-dshield.rules||quic-events.rules||emerging-dyn_dns.rules||rfb-events.rules||emerging-exploit.rules||smb-events.rules||emerging-exploit_kit.rules||smtp-events.rules||emerging-file_sharing.rules||ssh-events.rules||emerging-ftp.rules||stream-events.rules||emerging-games.rules||tls-events.rules||emerging-hunting.rules||emerging-icmp.rules||emerging-imap.rules||emerging-inappropriate.rules||emerging-info.rules||emerging-ja3.rules||emerging-malware.rules||emerging-misc.rules||emerging-mobile_malware.rules||emerging-netbios.rules||emerging-p2p.rules||emerging-phishing.rules||emerging-pop3.rules||emerging-remote_access.rules||emerging-retired.rules||emerging-rpc.rules||emerging-scada.rules||emerging-scan.rules||emerging-shellcode.rules||emerging-smtp.rules||emerging-snmp.rules||emerging-sql.rules||emerging-ta_abused_services.rules||emerging-telnet.rules||emerging-tftp.rules||emerging-threatview_CS_c2.rules||emerging-tor.rules||emerging-user_agents.rules||emerging-voip.rules||emerging-web_specific_apps.rules||emerging-worm.rules</rulesets>
 				<ips_policy_enable>off</ips_policy_enable>
 				<autoflowbitrules>on</autoflowbitrules>
+				<sid_state_order>enable_disable</sid_state_order>
+				<enable_sid_file>User Forced SID Actions</enable_sid_file>
+				<rule_sid_on>1:2000536||1:2000538||1:2000540</rule_sid_on>
+				<rule_sid_force_drop>1:2000536</rule_sid_force_drop>
+				<modify_sid_file>User Forced SID Actions</modify_sid_file>
+				<customrules>IyBEZXRlY3RhcmUgTm1hcCBTWU4gc2NhbiAoLXNTKQphbGVydCB0Y3AgJEVYVEVSTkFMX05FVCBhbnkgLT4gJEhPTUVfTkVUIGFueSAobXNnOiJOTUFQIFNZTiBzY2FuIGRldGVjdGVkIjsgZmxhZ3M6Uzsgc2lkOjEwMDAwMDE7IHJldjoxOykKCiMgRGV0ZWN0YXJlIE5tYXAgTlVMTCBzY2FuICgtc04pCmFsZXJ0IHRjcCAkRVhURVJOQUxfTkVUIGFueSAtPiAkSE9NRV9ORVQgYW55IChtc2c6Ik5NQVAgTlVMTCBzY2FuIGRldGVjdGVkIjsgZmxhZ3M6MDsgc2lkOjEwMDAwMDI7IHJldjoxOykKCiMgRGV0ZWN0YXJlIE5tYXAgWE1BUyBzY2FuICgtc1gpCmFsZXJ0IHRjcCAkRVhURVJOQUxfTkVUIGFueSAtPiAkSE9NRV9ORVQgYW55IChtc2c6Ik5NQVAgWE1BUyBzY2FuIGRldGVjdGVkIjsgZmxhZ3M6RlBVOyBzaWQ6MTAwMDAwMzsgcmV2OjE7KQoKIyBEZXRlY3RhcmUgTm1hcCBGSU4gc2NhbiAoLXNGKQphbGVydCB0Y3AgJEVYVEVSTkFMX05FVCBhbnkgLT4gJEhPTUVfTkVUIGFueSAobXNnOiJOTUFQIEZJTiBzY2FuIGRldGVjdGVkIjsgZmxhZ3M6Rjsgc2lkOjEwMDAwMDQ7IHJldjoxOykKCiMgRGV0ZWN0YXJlIE5tYXAgQUNLIHNjYW4gKC1zQSkKYWxlcnQgdGNwICRFWFRFUk5BTF9ORVQgYW55IC0+ICRIT01FX05FVCBhbnkgKG1zZzoiTk1BUCBBQ0sgc2NhbiBkZXRlY3RlZCI7IGZsYWdzOkE7IHNpZDoxMDAwMDA1OyByZXY6MTspCgojIERldGVjdGFyZSBObWFwIElQIHByb3RvY29sIHNjYW4gKC1zTykKYWxlcnQgaXAgJEVYVEVSTkFMX05FVCBhbnkgLT4gJEhPTUVfTkVUIGFueSAobXNnOiJOTUFQIElQIHByb3RvY29sIHNjYW4gZGV0ZWN0ZWQiOyBpcF9wcm90bzoxOyBzaWQ6MTAwMDAwNjsgcmV2OjE7KQo=</customrules>
 			</rule>
 			<alertsblocks>
 				<brefresh>on</brefresh>
@@ -1433,6 +1536,21 @@
 				<enable_cb>on</enable_cb>
 				<pfb_keep>on</pfb_keep>
 				<pfb_reuse></pfb_reuse>
+				<pfb_interval>1</pfb_interval>
+				<pfb_min>0</pfb_min>
+				<pfb_hour>0</pfb_hour>
+				<pfb_dailystart>0</pfb_dailystart>
+				<skipfeed>0</skipfeed>
+				<log_max_log>20000</log_max_log>
+				<log_max_errlog>20000</log_max_errlog>
+				<log_max_extraslog>20000</log_max_extraslog>
+				<log_max_ip_blocklog>20000</log_max_ip_blocklog>
+				<log_max_ip_permitlog>20000</log_max_ip_permitlog>
+				<log_max_ip_matchlog>20000</log_max_ip_matchlog>
+				<log_max_dnslog>20000</log_max_dnslog>
+				<log_max_dnsbl_parse_err>20000</log_max_dnsbl_parse_err>
+				<log_max_dnsreplylog>20000</log_max_dnsreplylog>
+				<log_max_unilog>20000</log_max_unilog>
 			</config>
 		</pfblockerng>
 		<pfblockerngipsettings>
@@ -1507,17 +1625,35 @@ ZXRnYXRlLmNvbQ0K</suppression>
 					<url>https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts</url>
 					<header>StevenBlack_ADs</header>
 				</row>
+				<row>
+					<format>auto</format>
+					<state><![CDATA[Enabled]]></state>
+					<url>https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts</url>
+					<header>StevenBlack_Porn</header>
+				</row>
+				<row>
+					<format>auto</format>
+					<state><![CDATA[Enabled]]></state>
+					<url>https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts</url>
+					<header>StevenBlack_fakenews_Gambling_Porn_SocialExtensions</header>
+				</row>
 				<action>unbound</action>
 				<cron>EveryDay</cron>
 				<logging>enabled</logging>
 				<order>default</order>
 				<dow>1</dow>
+				<sort>sort</sort>
+				<srcint></srcint>
+				<script_pre></script_pre>
+				<script_post></script_post>
+				<filter_alexa></filter_alexa>
+				<custom></custom>
 			</config>
 			<config>
-				<aliasname>Testing</aliasname>
-				<description><![CDATA[Just for testing]]></description>
+				<aliasname>InversionDNSBLBlocklists</aliasname>
+				<description><![CDATA[MaliciousHostnames]]></description>
 				<action>unbound</action>
-				<cron>Never</cron>
+				<cron>EveryDay</cron>
 				<dow>1</dow>
 				<sort>sort</sort>
 				<srcint></srcint>
@@ -1526,12 +1662,18 @@ ZXRnYXRlLmNvbQ0K</suppression>
 				<logging>enabled</logging>
 				<order>default</order>
 				<filter_alexa></filter_alexa>
-				<custom></custom>
+				<custom>eWFuZGV4LnJ1</custom>
 				<row>
 					<format>auto</format>
-					<state><![CDATA[Disabled]]></state>
-					<url></url>
-					<header></header>
+					<state><![CDATA[Enabled]]></state>
+					<url>https://raw.githubusercontent.com/elliotwutingfeng/Inversion-DNSBL-Blocklists/refs/heads/main/Google_hostnames.txt</url>
+					<header>GoogleHostnames</header>
+				</row>
+				<row>
+					<format>auto</format>
+					<state><![CDATA[Enabled]]></state>
+					<url>https://raw.githubusercontent.com/elliotwutingfeng/Inversion-DNSBL-Blocklists/refs/heads/main/Google_ipv4.txt</url>
+					<header>GoogleIpv4</header>
 				</row>
 			</config>
 		</pfblockerngdnsbl>
@@ -1587,7 +1729,7 @@ ZXRnYXRlLmNvbQ0K</suppression>
 					<url>https://talosintelligence.com/documents/ip-blacklist</url>
 					<header>Talos_BL</header>
 				</row>
-				<action>Deny_Outbound</action>
+				<action>Deny_Both</action>
 				<cron>01hour</cron>
 				<aliaslog>enabled</aliaslog>
 				<dow>1</dow>
@@ -1643,7 +1785,7 @@ ZXRnYXRlLmNvbQ0K</suppression>
 				<action>Deny_Outbound</action>
 				<aliaslog>enabled</aliaslog>
 				<countries4>RU,RU_rep</countries4>
-				<countries6>RU</countries6>
+				<countries6></countries6>
 				<autoaddrnot_in></autoaddrnot_in>
 				<autoports_in></autoports_in>
 				<aliasports_in></aliasports_in>
@@ -1708,20 +1850,29 @@ ZXRnYXRlLmNvbQ0K</suppression>
 		<prv>LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRRFFzYUxKRWpla2J3WUoKVzVzTE1PS25VbFk4UWpuYVBYQU9hbWs3Z2Y5RUZMd3ZEcXFnQkxid0JySGVhdTVIZUxERHJlRmhYYzY0dkhVSgpZazY2WW1Dazd3ZXJnMzgwQTVFbXpxZEZaUjJaeTlyeVdHVk9OUFV6UnRCVllLbEN1R2p4NThoT2JJT3VzZkQ1ClF3NDZkeFQvZ0VNOGNOZjgvVGRGZS9YaU1SUjhDbmt6NmRRWWFJVGZ0b2gxOGpHb1JZekFiNXlTc1UvdnRxcFMKUmttR2k1Q3VReHBGSUNSSU51dGZvWHI2MlFOaGFFVHpPSy9WQ0E0biszVVZGdzZkQkZLanNHUlEzY3JzQndISwpTR09ZeE9CbXZXUmFDZXMrbGd2bldXMHVJK2lFdlN2dlIzaUdvNG9waDdjc3Q3MHJnSVJoejhIcGFWZElpU004Clc4T0hEOEwvQWdNQkFBRUNnZ0VBQU5EVG1qdEVLaFExcnY5WTFhR0h5VVZQbnFXdG56WkNtVjUrSEhtYUcxU0UKd0hSV0RoRVJVVktJQ3g2dmpCVDRoVDN6NnhNQzlnTGxQRGVucDNVdlVUQmoveDRnOXYyVlB0UnJuL1dtRGlOWApXWlRSM3pmaXhpUUpPQm1NSDlMT1g0cGJPZW5xVm9UNGlhamk4SVNRVHZLeE8wRVUvd3Y5cXRFSFpDNXltT0l2CkhkRkdPRExvNzFNNk9XUHRYOVc2d1M1N09zREFoMllpeUhwWTV1Q241VUJCczlWbWJvNnExQlNIZlFHZkJJdWkKZGZpNStuSjFUTjV1RWhPd05Mc1ErWXNLV2tna2w3UWNvbGZiM211aDhIb0pqelB6MDFQSUg5SU0zL2Y4bGlZdwprbkUxek5YOWRVdHB5dndKQ2hSZHN6ZHRpYzBIOUJ3blU3b1JFUlE1QlFLQmdRRDcwZ2NRRVlsdmpHeEx2Q3N3CnZMaC9LSWZvVXRPWHlKUzJwU1RMMzV4bHdVQSswRm5kVmZlOUN1UGUvMUpSQ2ZQNlljSSs3azJ4a01yTHFRVysKY1puc0hMQ3prdVVKRjFwRnJZRUJLM2M2WFZiS3NOd05icE1wc2pyRGZoOXE2dVZtSWtoOGExNlo1T25XV0liQwpyMjJzem1XdGY0a3dEWVlxd1JXajA5N3dIUUtCZ1FEVUtGMm1FcnY0OFRFSnBDUFlXZUFUZ3dRYm5WTGNlbW5qCnZWSys0b0VpQmxldWo5SXJyRndjR0d3WUNHaUdpVytmRXR1WGlTK0p1KytaRjdKczVnV1lEV1ZsSXI1cnRQMnQKZ0EzMXQrdUU4dkJPelhvZktDNFNFdmVvMWZieHVRdlowb3Ntc3d3RHpkS1crcXZmNHhua0p0dHE5amNDUjdxLwpUaE9IcHo0TXl3S0JnRXJRMEpaZWozV2J3OFVRaDhoNEdWeDJIMExQOE51RWxXSmFXRDlXRlRKS0l4dEdiWnlMCjRRbkNSWWRJVmgyTGxuZ0tPVnJYRkRBd000QWtuSGREYXhheVEzRm1zRE51UTd5MTJzRU5OK1FZUFNRRlBhdWoKOFljTzA5U25FUkNENzFuVHo3TmZkd0REK1JGY3hkVHJwK3NTZXpUNzBqZDduU1B3cjh3M3MyR2xBb0dCQUtKWgpqV2h6dDZLRnQzZmdRb25pSk9YcGdYQThVTmRsV2Jpci9URVRsYXZhM0tnNWFLU0JEaTkxeE9vVExTR2U5R3J2CmZGa1c0dWpzaHlwSkJ3SHNkK1ZtZ3V3RXpXRVFySHRqbmNzbUJqWER6bjhQSUYvTldJditOY1RlajAxa3hKdlkKVVNHNUsvMlJPSkRPbkU0RXRLQngxOENmVDNNUVB1ajhMMWZFZEdoSEFvR0FOR3k3ZEF5aFN5ekhpUkNvekJDUgo2WFdYaUpON1cwZ0ZmQlU4OFh3dFVXUjVSMnlsRGdBTnViei8zYkFWQkk5d3lkVHdteHVVRWVnK3hZNWtGSnNJCmdrWk4rQWVzdFZBamovSEY1Q1gyZkNodnBGU3ZwdVdiNEV1Z3dxdmxreEl6ZWJlRnF2aXRFaFNoUTR2VllRNHAKU0xFbzROczFQQTlZRm5IM3Bxalh0OWs9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K</prv>
 		<serial>3</serial>
 	</ca>
+	<ca>
+		<refid>6852b1139eaae</refid>
+		<descr><![CDATA[DigiCERT]]></descr>
+		<trust>disabled</trust>
+		<randomserial>disabled</randomserial>
+		<crt>LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURNekNDQWh1Z0F3SUJBZ0lJSFVaSUhzaytNNlF3RFFZSktvWklodmNOQVFFTEJRQXdGakVVTUJJR0ExVUUKQXhNTGFXNTBaWEp1WVd3dFkyRXdIaGNOTWpVd05qRTRNVEl5T1RBNFdoY05NelV3TmpFMk1USXlPVEE0V2pBVwpNUlF3RWdZRFZRUURFd3RwYm5SbGNtNWhiQzFqWVRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDCkFRb0NnZ0VCQUs3SmlHQVgxTSt4cVlFWU01V0NlUTZDL0dzNTFpdUYxbnhWK240RmNnYTVOTzVsUHBLNnU2VnoKcS8xNkp1UUpaT083eHhhNWYvY2JYaGVHQjBTSEZZdW1XaXVyTk5CL0YrRUs0MFhlN2txVXk4L3diVFVnWHVLagp4aXA1MGxMeWlDbjJCMTZXNlF5WHBTTGJYZEEyMnk1QU9nUSswUGpjVnpLZkEwTHpkK2piNGp4ODNSRGU3NGZWCjNWbFZKYi9GbTlWWTArY0thNzM0aWFadGdPbW1UL2s3YkVaM2p3ZlpjSk5EZHphZUVHK2oydWdmM1MwMWpVTk8KQmJ3SW5jRUxhN3dnakFNMGJsRGpzcHVkQmQ5aHN5NU1ueWI5QlYyb0IydmE4TnNReWtjM0hkVU5jL0xNaFoyQwo1emhWRStvRGhUZ2krLzZmTUNuZXlxTGcvWjFrZldVQ0F3RUFBYU9CaERDQmdUQWRCZ05WSFE0RUZnUVVBOE9pCnRrMTQ3WlI3TzJsNVlNbFNtQjBOODFNd1JRWURWUjBqQkQ0d1BJQVVBOE9pdGsxNDdaUjdPMmw1WU1sU21CME4KODFPaEdxUVlNQll4RkRBU0JnTlZCQU1UQzJsdWRHVnlibUZzTFdOaGdnZ2RSa2dleVQ0enBEQU1CZ05WSFJNRQpCVEFEQVFIL01Bc0dBMVVkRHdRRUF3SUJCakFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBclcxdHV3TWMrSFQ3CnBXV3ZJV0QySTA5MlNIb0QzK0x2Z0NVWkhFQ1o4WHU5SHphWmhOTkJFWmZlTFJsUVpqN2M5bkxkNFlTWW9NajAKc2FTK3VrSWY0NTZFZ01ESDBibHdyRnFVSE9ET05FTVgrSkNWN1FUNTdKUHdINGIxL3N5cWkxd1p4UGo2REd6WAo1eEJoRVhLa2xHOXhmVzhCdHU3TjhuMW5Pb2x1MUtqYU9DY253NlkyWW13UVpNTGt1V0tDR3hvb1RGYmJLYUExCm5SSlo5dXMwRWhDUDJ3SnpCR3pUMWtDYWZXZEVGWkdlN2h2Yk5QVHRVUVF6WndSaEdkL2NJMmtDTWFLNEl4VUMKZktBbTdaVDJMWnphM2VSU0k2K2dVNHU0WEphcnArc1J2UENXOUJzcGF6NFRPZkM3eFlVRFBzTHRReWpuQ3ViSwpwVjRiQmRwNWhBPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=</crt>
+		<prv>LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktZd2dnU2lBZ0VBQW9JQkFRQ3V5WWhnRjlUUHNhbUIKR0RPVmdua09ndnhyT2RZcmhkWjhWZnArQlhJR3VUVHVaVDZTdXJ1bGM2djllaWJrQ1dUanU4Y1d1WC8zRzE0WApoZ2RFaHhXTHBsb3JxelRRZnhmaEN1TkYzdTVLbE12UDhHMDFJRjdpbzhZcWVkSlM4b2dwOWdkZWx1a01sNlVpCjIxM1FOdHN1UURvRVB0RDQzRmN5bndOQzgzZm8yK0k4Zk4wUTN1K0gxZDFaVlNXL3hadlZXTlBuQ211OStJbW0KYllEcHBrLzVPMnhHZDQ4SDJYQ1RRM2MybmhCdm85cm9IOTB0TlkxRFRnVzhDSjNCQzJ1OElJd0RORzVRNDdLYgpuUVhmWWJNdVRKOG0vUVZkcUFkcjJ2RGJFTXBITngzVkRYUHl6SVdkZ3VjNFZSUHFBNFU0SXZ2K256QXAzc3FpCjRQMmRaSDFsQWdNQkFBRUNnZ0VBSWpWOS9FYTF4MWVmbEExalRUUU4wdTRHanNyeFZLL2JjSmJZVWJGcHBaQzYKb0IwUEwrTWR4azViSDE5NHZLRnREbGhxYVJOeHpQQ2RqQStXblE0dVJKaVFwZUxha2FNS1RxaVZuazk1Um40VQpYTlNTM3piQWMyMjM0NGpYeGhYRFdpa1Z2S2pmSUhDT3FNR1QvU1E3WmpRNlZxbmZ0eEZTL0t5Y0ZBNjRUWW5tCkNrWHRJakJMSzB5UTljWGtmOEQ0L3lSUEVib0tjZlFFY2pmdFd2eGh1UlhHNEFyVU9tcEtxM2k4KzVsNFp3VUEKZ2VDUnZtSi9oM3kxMjZEaWEzRzFvUE9xaVRRVUd2L1dvcmlQaHR4VE0rUnZHMlhOZWtyV1VQY240NTcyNDh2Qwp0QVVOb1p3M0wrWkJ2SzFLN251R00rNHU2clA3MTJPZU1aODNWSE1PU1FLQmdRRHlxME8zd0p5Z0NLdGM3ZTJBCm5DVlFMdzZKOEdOb0hEaEtyVStKTGVuWXV1VkZlN1d4YzRSdEsvSGl5Mi9KWVVGbW50dFhzR2dJUVdMbDJqWkIKR04vbGp4c1FoTXRUZzJZVXFLVjRwM3Vub05ka0ZXQk00WXp1b2U3bG5Bdms1a25tNUgvbzZ4UC9yZGJiK0tOVgozN0FjcUxkWGNrVi8xemhwdVlTWHpDSGFuUUtCZ1FDNFk1L0xDTzMyOHk4UklWNFc4RHZ2YTRiaUVKMnVKVWJmCkpNZEI1N01YV1gxaXBVTDEyVXdzMFJndVBZNmJNTWpjRk9wZ25aQ0RocUJXeEFFU3g1eVo4a0loZ210K1Y5WnkKMmx3SUhQUHdtRFV0K3NHN0ZSd2JpQzliTGJmY25lR1lDb2RMQ21YMGJaSHZqdGtwck1Xdmw3cjY0cFVHSEhHcQp4SFc0aENzdmFRS0JnRlp4OEJPYlI3QXlwbWphVVFySmxQazFhaVoxUGRRdWlWY0EyaDV4L3FXNEhraGNRMk5OClZWVlduRHBBWWpnSXJ6V1JUVzIxWjduWklSUGtZZ05haXhmSm5NaUxwYXJBV2pMdHlOUnNSVDUzcTRMNW9tNkEKd3FXWGhmVEJXL05VbmVya1p6UmYyYVh4RldNUzlZeDN2TkxZdjBjbGErQ1ltSDRCR2x6QTJTWjVBb0dBZmg4TwpucGJtQmdOQ3oybk9iTXczZ3NVK3hvUnRCai9USVRDTDVvVndWMmxMdlZ5aTEzeWhnUW9vaXdCcCtiYTl2T1BGCmlQNWRhY2w5Qkx3ZXE5VERSZjJSeEUvcjdNaHlFNjlPUWZKajNNNlBtWHFxWnFmQ3lRWTJ0aHdvWmd2TDBlNXAKcWlkYm8zd0sxUndWYUU4WURNb3hDQWhSdkpOYUlGOHUwbDM5Ri9rQ2dZQURoY2ZHckRDSUxoUUNOWjFLWm1VZgpneUlndjVCTUY2OTk2TC9pSFNlNm1RdlBxanNyNFFoUHRtMkVxcFhRbldUci9SWVVlb0pvbGhCNmNjMlJUWnNYCm1kc2ZxWEloS3duUi9ya2EvOFcwZ1I4VElqd2R0Mks4cXdNK0dCRThUK2pQZUZFRlBhbWdiNFNFQlJGTjRieUQKb1ZSUHpON09RcU1PZlZsOFpONTlJZz09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K</prv>
+		<serial>1</serial>
+	</ca>
 	<ovpnserver>
 		<step1>
 			<type>local</type>
 		</step1>
 		<step6>
-			<authcertca>682cb80164144</authcertca>
+			<authcertca>6852b1139eaae</authcertca>
 		</step6>
 		<step9>
-			<authcertname>682cb838626e8</authcertname>
+			<authcertname>681107401b04f</authcertname>
 		</step9>
 		<step10>
-			<descr><![CDATA[OpenVPN Server]]></descr>
+			<descr><![CDATA[DigiVPN]]></descr>
 			<protocol>UDP4</protocol>
-			<interface>wan</interface>
+			<interface>lan</interface>
 			<localport>1194</localport>
 			<tlsauth>on</tlsauth>
 			<gentlskey>on</gentlskey>
@@ -1734,9 +1885,8 @@ ZXRnYXRlLmNvbQ0K</suppression>
 			<dynip>on</dynip>
 			<topology>subnet</topology>
 			<nbttype>0</nbttype>
-			<tunnelnet>10.8.0.0/24</tunnelnet>
-			<rdrgw>on</rdrgw>
-			<localnet>192.168.1.0/24</localnet>
+			<tunnelnet>192.168.168.0/24</tunnelnet>
+			<localnet>10.1.10.0/24</localnet>
 		</step10>
 		<step11>
 			<ovpnrule>on</ovpnrule>
@@ -1796,19 +1946,19 @@ ZXRnYXRlLmNvbQ0K</suppression>
 	<sshdata>
 		<sshkeyfile>
 			<filename>ssh_host_rsa_key</filename>
-			<xmldata>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</xmldata>
+			<xmldata>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</xmldata>
 		</sshkeyfile>
 		<sshkeyfile>
 			<filename>ssh_host_rsa_key.pub</filename>
-			<xmldata>Fce3kptQAEDR3l+xPWPrkaHYGZOjSEKkDkSOD5EEX+/1bc7cZal/v5f0i/uJx60rFdDzhUn/V+Rcjv9R4FzhhszWZqxy3dc+LE8h+QABjgzjI9b1fCQ5FRlv5eKoSGcTl0CepCCacXTZbaLY9lO0gGkK5emv4v3gWinATmazTcdsnFc6K/lwoZamFxyLFeIRqlRADNVxqBng4RZaaWdtHFGKGpnwyu4GzRQ2wR1peRqozq2uvACuN5en2bNhF0q2ZGv19yWpPktqXjbzlLPh+WGGx/j2Dv9hR2Pu40lrgZFW0VcsR1Q5Hh7tlCcU56uWbVNFW/1a9NDD71lKhoGZb1OZ4S2NxgXh3G+xhmeRxfZVrvKOWD7yqvBb/T1oJqka5cxQ0J+1oj9gvqqcTGApvrkMFih4ZtOwcvUH02W6DsbF6pYh8AY2bAG8Bxq1py4daCGJxSqW7dNnN7PW4Mh7Q0MRkZCjX8Sl90ffcapwW0OFUM+8BoZXxD1BY/xL3nuA1i8m0o7qoNQihJBA3SWQXAsFuzXMx36mkYPaTl5FZ+c2a9ldG5Il5Opr6nMMQDzOtDef5ZCllHcOfPCBBiVdJmOzgpAp/QDlvCSdj/48Os1JfI/iVZ0c1zZsbdC0qPlA+JQAUv6WX5iC6plt1ElcE4AjP2I/KDm5hSDC8thR+NtwFrLW11enM4EGxkzCEJMvhI68SawAIUVb2Xp0Nmzx9x4UlK43zuSTkWBMBNsbnT1IC4IAG5E4gRmzYl0nwM7H9/fXe5rWv7B8FONS/KmnofiTvmH66x8=</xmldata>
+			<xmldata>FZG3EptAAER7f4V7xiYjKDxjcj6SQIiOJEAc4kQUfL3lbXbelm/nuf01zflP8RuJBmcuk0dJqf9REQNR+rYsBvJJJr3PY75Kg8FvD5frtBnziTV8OhM7NaBEVzAoCMDikFRi0JGA42Ejj3qBIzFfIqaf5nLU0wsmACYxx7LmOz1KYyHVsB7XSdpl+1RQ7AnwoQfDt0vPzNszho5yDSHg4QTrq9lfHj5kA102PIWIqjShHyPpsN8xHYEIuaOUYwhY7gXDJCtreqDWfd46KJBkQ78iaSL6arjEbH23b15f2qUaJkTpK/S1arfHDnEe+Y7GPJB/vFvu1sjlq8sMfWWirhp3F28/UHux604JpKf5jO40rWMNs2bI4HbwCrs8dstyoFP3bww6WWl1WrzGxlprd/BGVZeGp7UR01WRSgkVYhwNrrGBOTUXB9QdpC8P1fvcivxW5bXLFxtnGyZau4XjTxtoZIPStUBBAhJsz6vzI3r3mcbivhP0AMn0xfW/F6gVtwqBt84kk2qWeKZmmyECV62TlqHgpkPFrPu1XULlNpK1bftfrwB/rq93kwbBFhtm5vqHcWeFc0QMMwyUQTcWAAim7qs3EfgUjZuqQuj4WK/JW4XHnDnmpDPUBsjUsZYlkTA0GD13Q7tYNizshsuOdIPP8wTRh2j5e/jsLhQUQp73Xqe4WImurMH7kpOqmvgUyQ+fighISUH3KJypSFsCvd/sp20n5hVf6XWY4vzTXhvlLkCknXGnZX1LRWUFELL3P39+TuO4/EWPqH7N9e92HOrf+YTyH/8A</xmldata>
 		</sshkeyfile>
 		<sshkeyfile>
 			<filename>ssh_host_ed25519_key</filename>
-			<xmldata>nZDPb4IwHMXv/BXejVFA/HFsuwIKVAsotDers5tY2Bwi8NdvXbJkl132Di/f5H3zycsbjb4Esbcig80WkyTxB9t4tQcpHgSY6XBkCBteRUn6AzJvPC/q0wUDLeg5jVA7fWKhlndOwY+gtuihve6Plqx5ZtCOpLt2o58QglOPhQWKl8J+cFQDwhWe3FxSsbXVRFQNzRQt2lPS9BoSgHwavit3iGbGm/xN/S/U0KVRWYyrSrz20RjOLSLzPetqezMLLnQWtPGV8oPDMh88s3PlSy7vdO2bzRkWwQSYiqXJh7GzXmR5WLRIzPdR2LtmMN7qfm65boQdg6PHU545PU+cSljmNVRud/QwBDLCkDLf+J4Yk6e/5/8E</xmldata>
+			<xmldata>nZBNj4IwGITv/ArvhqxAWPXYQq2C8lE+xN4srI1aWEAU5Nev3WSTvexln8PkTd7JZDKq+gIivPEmfoC8KFpPArJJQYwmLjrIp6owAwpWeePR0lqaXbvigoAEYvPBykSeiJXLOw3BD1DKrpfajbnOO7pXwqcXJ4MvTZYlhpo09dk5xpe3qiE3sO7BLK6S6DlnOUqD1ckDi8RxDxZ/+V1YtYWB6LtRKAP4nfrfUEWWhnfm23od6aLUeJbuz/3AtbBFS07nWJhdngatM97u5920ybDATbkRtR9MP2rcgxOwia8UZLvtup4ki3Qxs4fwWnNX9ltVzoMZBOSYxnRvjjQyP5muiW25euYYQcB3CIaHtfI9MfLsv+f/Ag==</xmldata>
 		</sshkeyfile>
 		<sshkeyfile>
 			<filename>ssh_host_ed25519_key.pub</filename>
-			<xmldata>Ky7O0E1NMTI1NbRUcAQCZ2O/qkRnw5woF09DvxBXU5CYp6dHelR6aaCXh2FZmlO2t4GjYW5kSHBxqFFGel6iRYVzknmYr0+Vm6G3foBCUX5+iUNBWnBqXnGqXkZ+bqpeYlFBIhcA</xmldata>
+			<xmldata>Ky7O0E1NMTI1NbRUcAQCZ2O/qkRnw5woF09DvxBXU5CYp3eEe457Ya5nToF/gHZqgXu5Y5qjS5B/SpCPT0lJeVCoRZiFgUtFYHZBurdCUX5+iUNBWnBqXnGqXkZ+bqpeYlFBIhcA</xmldata>
 		</sshkeyfile>
 	</sshdata>
 </pfsense>
